@@ -102,7 +102,15 @@ class _AnimSearchBarState extends State<AnimSearchBar>
   @override
   Widget build(BuildContext context) {
     return Container(
-      height: 100.0,
+      decoration: BoxDecoration(
+        color: Colors.white,
+        border: Border.all(
+          color: Colors.grey,
+          width: 0.5,
+        ),
+        shape: toggle == 0 ? BoxShape.circle : BoxShape.rectangle,
+        borderRadius: toggle == 0 ? null : BorderRadius.circular(8),
+      ),
 
       ///if the rtl is true, search bar will be from right to left
       alignment: widget.rtl ? Alignment.centerRight : Alignment(-1.0, 0.0),
@@ -117,14 +125,6 @@ class _AnimSearchBarState extends State<AnimSearchBar>
           /// can add custom color or the color will be white
           color: widget.color,
           borderRadius: BorderRadius.circular(30.0),
-          boxShadow: [
-            BoxShadow(
-              color: Colors.black26,
-              spreadRadius: -10.0,
-              blurRadius: 10.0,
-              offset: Offset(0.0, 10.0),
-            ),
-          ],
         ),
         child: Stack(
           children: [
