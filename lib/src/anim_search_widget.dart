@@ -2,9 +2,10 @@ import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
+typedef StringCallback(String value);
+
 class AnimSearchBar extends StatefulWidget {
   ///  width - double ,isRequired : Yes
-  ///  textController - TextEditingController  ,isRequired : Yes
   ///  onSuffixTap - Function, isRequired : Yes
   ///  rtl - Boolean, isRequired : No
   ///  autoFocus - Boolean, isRequired : No
@@ -17,7 +18,6 @@ class AnimSearchBar extends StatefulWidget {
   /// inputFormatters - TextInputFormatter, Required - No
 
   final double width;
-  final TextEditingController textController;
   final Icon? suffixIcon;
   final Icon? prefixIcon;
   final String helpText;
@@ -29,15 +29,13 @@ class AnimSearchBar extends StatefulWidget {
   final bool closeSearchOnSuffixTap;
   final Color? color;
   final List<TextInputFormatter>? inputFormatters;
+  final StringCallback? onSubmitted;
 
   const AnimSearchBar({
     Key? key,
 
     /// The width cannot be null
     required this.width,
-
-    /// The textController cannot be null
-    required this.textController,
     this.suffixIcon,
     this.prefixIcon,
     this.helpText = "Search...",
@@ -63,6 +61,7 @@ class AnimSearchBar extends StatefulWidget {
 
     /// can add list of inputformatters to control the input
     this.inputFormatters,
+    this.onSubmitted,
   }) : super(key: key);
 
   @override
@@ -104,10 +103,6 @@ class _AnimSearchBarState extends State<AnimSearchBar>
     return Container(
       decoration: BoxDecoration(
         color: Colors.white,
-        border: Border.all(
-          color: Colors.grey,
-          width: 0.5,
-        ),
         shape: toggle == 0 ? BoxShape.circle : BoxShape.rectangle,
         borderRadius: toggle == 0 ? null : BorderRadius.circular(8),
       ),
@@ -203,12 +198,11 @@ class _AnimSearchBarState extends State<AnimSearchBar>
                     alignment: Alignment.topCenter,
                     width: widget.width / 1.7,
                     child: TextField(
-                      ///Text Controller. you can manipulate the text inside this textField by calling this controller.
-                      controller: widget.textController,
                       inputFormatters: widget.inputFormatters,
                       focusNode: focusNode,
                       cursorRadius: Radius.circular(10.0),
                       cursorWidth: 2.0,
+                      onSubmitted: widget.onSubmitted,
                       onEditingComplete: () {
                         /// on editing complete the keyboard will be closed and the search bar will be closed
                         unfocusKeyboard();
